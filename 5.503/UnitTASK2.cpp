@@ -1,0 +1,44 @@
+//---------------------------------------------------------------------------
+// Приложна задача TASK2
+//---------------------------------------------------------------------------
+#include <vcl.h>
+#include <stdio.h>
+#pragma hdrstop
+
+#include "UnitTASK2.h"
+#include "UnitFormMain.h"
+#include "UnitCSP.h"
+//---------------------------------------------------------------------------
+extern CHAN*	chanPQ;			// канал между P и Q
+extern CHAN*	chanQC;			// канал между Q и C
+//---------------------------------------------------------------------------
+void WINAPI Task2(PVOID pvParam)
+{
+  int intCounter = 0;
+  formMain->stTask2->Caption = intCounter;
+  formMain->pbarTask2->Position = intCounter;
+
+  CHAN_MSG msg;
+  msg.len = sizeof(intCounter);
+
+  while(true)
+  {
+	// Работен цикъл
+	// Получаване на съобщение
+	RECV(chanPQ, &msg);
+	memcpy(&intCounter, &msg.data, msg.len);
+	SEND(chanQC, &msg);
+
+	formMain->stTask2->Caption = intCounter;
+	formMain->pbarTask2->Position = intCounter;
+
+	if(intCounter == LIMIT)
+	{
+	  STOP;				// терминиране на задачата
+	}
+
+	Switch();			// превключване на контекста
+  }
+}
+//---------------------------------------------------------------------------
+
