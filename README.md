@@ -1,5 +1,5 @@
 # fOS
- Exo-, nanokernel fiberOS/CSP
+ Exokernel fiberOS/CSP
 
  IDE: Embarcadero C++ Builder 10.4.2
  Platform: Windows/IA-32 & Intel64
